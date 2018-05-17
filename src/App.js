@@ -10,8 +10,8 @@ class App extends Component {
 
     this.state = {
       cities: [
-        'Санкт-Петербург'/*,
-        'Москва',
+        'Санкт-Петербург',
+        'Москва'/*,
         'Казань',
         'Самара',
         'Красноярск',
@@ -28,8 +28,8 @@ class App extends Component {
     this.changeCity = this.changeCity.bind(this);
     this.getCityForecast = this.getCityForecast.bind(this);
     this.getForecastData = this.getForecastData.bind(this);
-    this.renderForecast = this.renderForecast.bind(this);
-    this.displayCities = this.displayCities.bind(this);
+    this.renderCities = this.renderCities.bind(this);
+    this.displyCities = this.displyCities.bind(this);
   }
 
   changeCity = value => {
@@ -64,7 +64,7 @@ class App extends Component {
         let jsonResponse = await response.json();
         if (jsonResponse.DailyForecasts) {
           let cityData = jsonResponse.DailyForecasts.map(forecast => ({
-              icon: forecast.Day.Icon, 
+              icon: forecast.Day.Icon,
               iconPhrase: forecast.Day.IconPhrase,
               tempValue: forecast.Temperature.Maximum.Value,
               tempUnit: forecast.Temperature.Maximum.Unit,
@@ -72,9 +72,23 @@ class App extends Component {
               cityName: cityName
             })   
           );
+
+          let renderCity = cityData.map(city => (
+              <div
+                className="weather"
+                key={city.cityKey}>
+                <h1>{city.cityName}</h1>
+                <img
+                  src={`http://apidev.accuweather.com/developers/Media/Default/WeatherIcons/${city.icon}-s.png`}
+                  alt={city.iconPhrase}
+                  className="weathericon" />
+                <h2>Температура: {city.tempValue}°{city.tempUnit}</h2>
+              </div>
+            )
+          );
           
-          this.setState({cityObjects: cityData});
-          console.log(cityData, this.state.cityObjects);
+          this.setState({cityObjects: renderCity});
+          console.log({cityObjects: cityData});
           return cityData;
         } else {
           return [];
@@ -87,25 +101,19 @@ class App extends Component {
     }
   }
 
-  renderForecast = city => (
-    <div 
-      className="weather"
-      key={city.cityKey}>
-      <h1>{city.cityName}</h1>
-      <img
-        src={`http://apidev.accuweather.com/developers/Media/Default/WeatherIcons/${city.icon}-s.png`}
-        alt={city.iconPhrase}
-        className="weathericon" />
-      <h2>Температура: {city.tempValue}°{city.tempUnit}</h2>
-    </div>
-  );
+  renderCities = () => {
+    if(this.state.cities) {
+      const cityObjects = this.state.cities.map(city => this.getCityForecast(city));
+      console.log(cityObjects);
+    }
+  }
 
-  displayCities = () => {
-    const cityObjects = this.state.cities.map(city => this.getCityForecast(city));
-    console.log(this.state.cityObjects);
-
-    const cities = this.cityObjects.map(city => this.renderForecast(city));
-    console.log(cities);
+  displyCities = () => {
+    if(this.state.cityObjects) {
+      return this.state.cityObjects;
+    } else {
+      return [];
+    }
   }
 
   render() {
@@ -115,8 +123,9 @@ class App extends Component {
           city={this.state.cities[0]}
           changeCity={this.changeCity} />
         <div className="container">
-        <WeatherSamples
-          displayCities={this.displayCities} />
+        {<WeatherSamples
+          renderCities={this.renderCities}
+          displyCities={this.displyCities} />}
         </div>
       </div>
     );

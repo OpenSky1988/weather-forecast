@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import './WeatherSamples.css';
 
 export class WeatherSamples extends Component {
+  componentWillMount() {
+    this.props.renderCities();
+  }
+
   render() {
     return (
       <div>
@@ -10,7 +14,7 @@ export class WeatherSamples extends Component {
             <h2>ПОГОДА НА СЕГОДНЯ</h2>
           </div>
           <section id="weather">
-            {this.props.displayCities()}
+            {this.props.displyCities()}
           </section>
       </div>
     );
@@ -18,7 +22,8 @@ export class WeatherSamples extends Component {
 };
 
 WeatherSamples.propTypes = {
-  displayCities: PropTypes.func.isRequired,
+  displyCities: PropTypes.func.isRequired,
+  renderCities: PropTypes.func.isRequired,
 };
 
 export default WeatherSamples;
