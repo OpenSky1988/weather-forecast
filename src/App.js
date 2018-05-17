@@ -11,7 +11,7 @@ class App extends Component {
     this.state = {
       cities: [
         'Санкт-Петербург',
-        'Москва'/*,
+        'Москва'/*, Limited since accuweather.com API has query limit
         'Казань',
         'Самара',
         'Красноярск',
@@ -86,14 +86,11 @@ class App extends Component {
               </div>
             )
           );
-          
-          this.setState({cityObjects: renderCity});
-          console.log({cityObjects: cityData});
-          return cityData;
+
+          return renderCity;
         } else {
           return [];
         }
-        
       }
       throw new Error('Forecast request failed!');
     } catch (error) {
@@ -103,8 +100,9 @@ class App extends Component {
 
   renderCities = () => {
     if(this.state.cities) {
-      const cityObjects = this.state.cities.map(city => this.getCityForecast(city));
-      console.log(cityObjects);
+      const cityObj = Promise.all(this.state.cities.map(city => this.getCityForecast(city)))
+        .then(resp => (resp));
+      console.log(cityObj);
     }
   }
 
