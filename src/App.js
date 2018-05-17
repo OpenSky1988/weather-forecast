@@ -29,7 +29,7 @@ class App extends Component {
     this.getCityForecast = this.getCityForecast.bind(this);
     this.getForecastData = this.getForecastData.bind(this);
     this.renderCities = this.renderCities.bind(this);
-    this.displyCities = this.displyCities.bind(this);
+    this.displayCities = this.displayCities.bind(this);
   }
 
   changeCity = value => {
@@ -82,7 +82,7 @@ class App extends Component {
                   src={`http://apidev.accuweather.com/developers/Media/Default/WeatherIcons/${city.icon}-s.png`}
                   alt={city.iconPhrase}
                   className="weathericon" />
-                <h2>Температура: {city.tempValue}°{city.tempUnit}</h2>
+                <h2>{`Температура: ${city.tempValue}°${city.tempUnit}`}</h2>
               </div>
             )
           );
@@ -108,7 +108,7 @@ class App extends Component {
     }
   }
 
-  displyCities = () => {
+  displayCities = () => {
     if(this.state.cityObjects) {
       return this.state.cityObjects;
     } else {
@@ -125,7 +125,7 @@ class App extends Component {
         <div className="container">
         {<WeatherSamples
           renderCities={this.renderCities}
-          displyCities={this.displyCities} />}
+          displayCities={this.displayCities} />}
         </div>
       </div>
     );

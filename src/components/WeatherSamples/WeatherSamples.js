@@ -14,7 +14,7 @@ export class WeatherSamples extends Component {
             <h2>ПОГОДА НА СЕГОДНЯ</h2>
           </div>
           <section id="weather">
-            {this.props.displyCities()}
+            {this.props.displayCities()}
           </section>
       </div>
     );
@@ -22,7 +22,7 @@ export class WeatherSamples extends Component {
 };
 
 WeatherSamples.propTypes = {
-  displyCities: PropTypes.func.isRequired,
+  displayCities: PropTypes.func.isRequired,
   renderCities: PropTypes.func.isRequired,
 };
 
