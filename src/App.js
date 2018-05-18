@@ -11,7 +11,7 @@ class App extends Component {
     this.state = {
       cities: [
         'Санкт-Петербург',
-        'Москва'/*, Limited since accuweather.com API has query limit
+        'Москва',
         'Казань',
         'Самара',
         'Красноярск',
@@ -19,7 +19,7 @@ class App extends Component {
         'Челябинск',
         'Оренбург',
         'Ростов-на-Дону',
-        'Орск'*/
+        'Орск'
       ],
 
       cityObjects: []
@@ -98,11 +98,12 @@ class App extends Component {
     }
   }
 
-  renderCities = () => {
+  renderCities = async () => {
     if(this.state.cities) {
-      const cityObj = Promise.all(this.state.cities.map(city => this.getCityForecast(city)))
-        .then(resp => (resp));
-      console.log(cityObj);
+      const cityObj = await Promise.all(this.state.cities
+        .map(city => this.getCityForecast(city)))
+          .catch(e => {console.log(e)});
+      this.setState({cityObjects: cityObj}); // Save response to this.cityObjects
     }
   }
 
