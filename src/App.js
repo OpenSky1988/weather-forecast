@@ -9,31 +9,33 @@ class App extends Component {
     super(props);
 
     this.state = {
+      city: '',
       cities: [
-        'Санкт-Петербург',
-        'Москва',
+        /*'Санкт-Петербург',
+        'Москва',*/
         'Казань',
         'Самара',
-        'Красноярск',
+        /*'Красноярск',
         'Чита',
         'Челябинск',
         'Оренбург',
         'Ростов-на-Дону',
-        'Орск'
+        'Орск'*/
       ],
-
-      cityObjects: []
+      loading: false,
+      cityObjects: [],
     };
 
     this.changeCity = this.changeCity.bind(this);
     this.getCityForecast = this.getCityForecast.bind(this);
     this.getForecastData = this.getForecastData.bind(this);
     this.renderCities = this.renderCities.bind(this);
+    this.modifyIconNumber = this.modifyIconNumber.bind(this);
     this.displayCities = this.displayCities.bind(this);
   }
 
   changeCity = value => {
-    this.setState({ cities: [value] });
+    this.setState({ city: value });
   }
 
   getCityForecast = async (cityName) => {
@@ -64,7 +66,7 @@ class App extends Component {
         let jsonResponse = await response.json();
         if (jsonResponse.DailyForecasts) {
           let cityData = jsonResponse.DailyForecasts.map(forecast => ({
-              icon: forecast.Day.Icon,
+              icon: this.modifyIconNumber(forecast.Day.Icon),
               iconPhrase: forecast.Day.IconPhrase,
               tempValue: forecast.Temperature.Maximum.Value,
               tempUnit: forecast.Temperature.Maximum.Unit,
@@ -115,11 +117,14 @@ class App extends Component {
     }
   }
 
+  modifyIconNumber = iconNumber => 
+    (('0' + iconNumber).slice(-2));
+
   render() {
     return (
       <div className="App">
         <SearchBar 
-          city={this.state.cities[0]}
+          city={this.state.city}
           changeCity={this.changeCity} />
         <div className="container">
         {<WeatherSamples
