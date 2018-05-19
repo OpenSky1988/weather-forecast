@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import './WeatherSamples.css';
 
 export class WeatherSamples extends Component {
-  componentWillMount() {
-    this.props.renderCities();
+  componentDidMount() {
+    this.props.renderCities('cities');
   }
 
   render() {

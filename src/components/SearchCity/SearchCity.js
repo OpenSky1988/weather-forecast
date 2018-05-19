@@ -3,19 +3,44 @@ import PropTypes from 'prop-types';
 import './SearchCity.css';
 
 export class SearchCity extends Component {
+  state = {};
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if(nextProps.city !== prevState.city) { // check city was updated
+      return {
+        city: nextProps.city, // save id in state
+      };
+    }
+
+    return null;
+  }
+
+  componentDidMount() {
+    this.props.renderCities('city');
+  }
+
+  componentDidUpdate(_, prevState) {
+    if(prevState.city !== this.state.city) {
+      this.props.renderCities('city');
+    }
+  }
+
   render() {
     return (
       <div id="search-result">
         <h1>Результат поиска:</h1>
-        {this.props.getCityForecast(this.props.city)}
+        {this.props.displayCities()}
       </div>
     )
   }
 }
 
 SearchCity.propTypes = {
-  getCityForecast: PropTypes.func.isRequired,
-  city: PropTypes.string.isRequired,
+  city: PropTypes.arrayOf(
+    PropTypes.string,
+  ),
+  displayCities: PropTypes.func.isRequired,
+  renderCities: PropTypes.func.isRequired,
 };
 
 export default SearchCity;

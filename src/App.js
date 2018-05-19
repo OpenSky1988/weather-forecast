@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import './App.css';
 
 import SearchBar from './components/SearchBar/SearchBar';
+import WeatherLoader from './components/WeatherLoader/WeatherLoader';
 import WeatherSamples from './components/WeatherSamples/WeatherSamples';
+import SearchCity from './components/SearchCity/SearchCity';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      city: '',
+      city: [''],
       cities: [
         /*'Санкт-Петербург',
         'Москва',*/
@@ -35,7 +37,8 @@ class App extends Component {
   }
 
   changeCity = value => {
-    this.setState({ city: value });
+    console.log("setting city sate");
+    this.setState({ city: [value] });
   }
 
   getCityForecast = async (cityName) => {
@@ -48,6 +51,7 @@ class App extends Component {
       let response = await fetch(uriToFetch);
       if(response.ok) {
         let jsonResponse = await response.json();
+        console.log(this.state.city);
         return this.getForecastData(jsonResponse[0].Key, jsonResponse[0].LocalizedName);
       }
       throw new Error('City request failed!');
@@ -100,12 +104,16 @@ class App extends Component {
     }
   }
 
-  renderCities = async () => {
-    if(this.state.cities) {
-      const cityObj = await Promise.all(this.state.cities
+  renderCities = async (cities) => {
+    /*this.setState({ loading: true });*/
+    if(this.state[cities]) {
+      const cityObj = await Promise.all(this.state[cities]
         .map(city => this.getCityForecast(city)))
+        /*.then(() => {
+          this.setState({ loading: false })
+        })*/
           .catch(e => {console.log(e)});
-      this.setState({cityObjects: cityObj}); // Save response to this.cityObjects
+      this.setState({cityObjects: cityObj});
     }
   }
 
@@ -124,12 +132,20 @@ class App extends Component {
     return (
       <div className="App">
         <SearchBar 
-          city={this.state.city}
           changeCity={this.changeCity} />
         <div className="container">
-        {<WeatherSamples
-          renderCities={this.renderCities}
-          displayCities={this.displayCities} />}
+        {
+          this.state.loading // Shows spinner (true) or result (false)
+            ? <WeatherLoader />
+            : this.state.city[0] // Activetes on the 1st letter. Make it work on Submit.
+              ? <SearchCity
+                  city={this.state.city}
+                  renderCities={this.renderCities}
+                  displayCities={this.displayCities} />
+              : <WeatherSamples
+                  renderCities={this.renderCities}
+                  displayCities={this.displayCities} />
+        }
         </div>
       </div>
     );

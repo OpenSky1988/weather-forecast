@@ -6,19 +6,26 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      city: '',
+    }
+
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   onChange = (e) => {
     const { value } = e.target;
-    this.props.changeCity(value);
+    this.setState({ city: value });
+    console.log(this.state.city, typeof this.state.city);
+    if (this.state.city = '')
+      this.props.changeCity(this.state.city);
   }
 
   onSubmit = (e) => {
     e.preventDefault();
     const { value } = e.target;
-    this.props.changeCity(value);
+    this.props.changeCity(this.state.city);
   }
 
   render () {
@@ -28,12 +35,12 @@ class SearchBar extends Component {
         <form onSubmit={this.onSubmit}>
           <input
             onChange={this.onChange}
-            value={this.props.city}
+            value={this.state.city}
             name="city"
             id="city"
             type="text"
           />
-          <div id="button" type="submit">Поиск</div>
+          <button type="submit">Поиск</button>
         </form>
       </main>
     );
@@ -42,7 +49,6 @@ class SearchBar extends Component {
 
 SearchBar.propTypes = {
   changeCity: PropTypes.func.isRequired,
-  city: PropTypes.string,
 };
 
 export default SearchBar;
