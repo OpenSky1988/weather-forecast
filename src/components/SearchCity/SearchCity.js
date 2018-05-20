@@ -3,12 +3,16 @@ import PropTypes from 'prop-types';
 import './SearchCity.css';
 
 export class SearchCity extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if(nextProps.city !== prevState.city) { // check city was updated
+    if(nextProps.city !== prevState.city) { //
       return {
-        city: nextProps.city, // save id in state
+        city: nextProps.city,
       };
     }
 

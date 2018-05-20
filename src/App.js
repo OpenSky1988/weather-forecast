@@ -13,11 +13,11 @@ class App extends Component {
     this.state = {
       city: [''],
       cities: [
-        /*'Санкт-Петербург',
-        'Москва',*/
-        'Казань',
+        'Санкт-Петербург',
+        'Москва',
+        /*'Казань',
         'Самара',
-        /*'Красноярск',
+        'Красноярск',
         'Чита',
         'Челябинск',
         'Оренбург',
@@ -37,16 +37,16 @@ class App extends Component {
   }
 
   changeCity = value => {
-    console.log("setting city sate");
+    console.log("Setting city sate...");
     this.setState({ city: [value] });
   }
 
   getCityForecast = async (cityName) => {
-    const dashedCityName = cityName.replace(/\s+/g, '-');
+    const encodedCityName = encodeURIComponent(cityName);
 
     const apiKey = 'c3UtEs951z4gYbCuWrAEpqTLhUICjXuV';
     const cityUri = 'http://dataservice.accuweather.com/locations/v1/cities/search';
-    const uriToFetch = `${cityUri}?q=${dashedCityName}&language=ru&apikey=${apiKey}`;
+    const uriToFetch = `${cityUri}?q=${encodedCityName}&language=ru&apikey=${apiKey}`;
     try {
       let response = await fetch(uriToFetch);
       if(response.ok) {
