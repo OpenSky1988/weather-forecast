@@ -16,10 +16,12 @@ class SearchBar extends Component {
 
   onChange = (e) => {
     const { value } = e.target;
-    this.setState({ city: value });
-    console.log(this.state.city, typeof this.state.city);
-    if (this.state.city = '')
-      this.props.changeCity(this.state.city);
+    this.setState({
+      city: value
+    }, () => {
+      if (this.state.city === '')
+        this.props.changeCity(this.state.city);
+    });
   }
 
   onSubmit = (e) => {
