@@ -84,10 +84,11 @@ class App extends Component {
                 className="weather"
                 key={city.cityKey}>
                 <h1>{city.cityName}</h1>
-                <img
-                  src={`http://apidev.accuweather.com/developers/Media/Default/WeatherIcons/${city.icon}-s.png`}
-                  alt={city.iconPhrase}
-                  className="weathericon" />
+                <div className="weathericon">
+                  <img
+                    src={`http://apidev.accuweather.com/developers/Media/Default/WeatherIcons/${city.icon}-s.png`}
+                    alt={city.iconPhrase} />
+                </div>
                 <h2>{`Температура: ${city.tempValue}°${city.tempUnit}`}</h2>
               </div>
             )

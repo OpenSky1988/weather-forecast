@@ -112,7 +112,17 @@ main form button:active {
   border-radius: 50%;
   height: 100px;
   margin: auto !important;
+  position: relative;
   width: 100px;
+}
+
+.weather .weathericon img {
+  height: 100px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  transform: translate(-50%, -50%);
 }
 
 @media screen and (max-width: /*1500px*/1874px) {
