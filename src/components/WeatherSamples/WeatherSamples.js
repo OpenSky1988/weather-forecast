@@ -16,8 +16,11 @@ export class WeatherSamples extends Component {
             <h2>ПОГОДА НА СЕГОДНЯ</h2>
           </div>
           <section id="weather">
-            {this.props.loading && <WeatherLoader />}
-            {this.props.displayCities() /* Ouputs array of cities */}
+          {
+            this.props.loading 
+              ? <WeatherLoader />
+              : this.props.displayCities()
+          }
           </section>
       </div>
     );

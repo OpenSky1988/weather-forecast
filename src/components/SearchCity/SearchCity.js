@@ -35,8 +35,11 @@ export class SearchCity extends Component {
     return (
       <div id="search-result">
         <h1>Результат поиска:</h1>
-        {this.props.loading && <WeatherLoader />}
-        {this.props.displayCities()}
+        {
+          this.props.loading 
+            ? <WeatherLoader />
+            : this.props.displayCities()
+        }
       </div>
     )
   }
