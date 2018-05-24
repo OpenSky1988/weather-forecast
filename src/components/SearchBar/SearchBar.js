@@ -20,14 +20,13 @@ class SearchBar extends Component {
       city: value
     }, () => {
       if (this.state.city === '')
-        this.props.changeCity(this.state.city);
+        this.props.setCity(this.state.city);
     });
   }
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { value } = e.target;
-    this.props.changeCity(this.state.city);
+    this.props.setCity(this.state.city);
   }
 
   render () {
@@ -50,7 +49,7 @@ class SearchBar extends Component {
 }
 
 SearchBar.propTypes = {
-  changeCity: PropTypes.func.isRequired,
+  setCity: PropTypes.func.isRequired,
 };
 
 export default SearchBar;

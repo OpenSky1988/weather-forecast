@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import './WeatherSamples.css';
+import WeatherLoader from '../WeatherLoader/WeatherLoader';
 
 export class WeatherSamples extends Component {
   componentDidMount() {
@@ -14,7 +16,8 @@ export class WeatherSamples extends Component {
             <h2>ПОГОДА НА СЕГОДНЯ</h2>
           </div>
           <section id="weather">
-            {this.props.displayCities()}
+            {this.props.loading && <WeatherLoader />}
+            {this.props.displayCities() /* Ouputs array of cities */}
           </section>
       </div>
     );
@@ -22,6 +25,7 @@ export class WeatherSamples extends Component {
 };
 
 WeatherSamples.propTypes = {
+  loading: PropTypes.bool.isRequired,
   displayCities: PropTypes.func.isRequired,
   renderCities: PropTypes.func.isRequired,
 };

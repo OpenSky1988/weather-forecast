@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import './SearchCity.css';
+import WeatherLoader from '../WeatherLoader/WeatherLoader';
 
 export class SearchCity extends Component {
   constructor(props) {
@@ -33,6 +35,7 @@ export class SearchCity extends Component {
     return (
       <div id="search-result">
         <h1>Результат поиска:</h1>
+        {this.props.loading && <WeatherLoader />}
         {this.props.displayCities()}
       </div>
     )
@@ -43,6 +46,7 @@ SearchCity.propTypes = {
   city: PropTypes.arrayOf(
     PropTypes.string,
   ),
+  loading: PropTypes.bool.isRequired,
   displayCities: PropTypes.func.isRequired,
   renderCities: PropTypes.func.isRequired,
 };

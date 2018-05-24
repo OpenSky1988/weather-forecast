@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 
 import SearchBar from './components/SearchBar/SearchBar';
-import WeatherLoader from './components/WeatherLoader/WeatherLoader';
 import WeatherSamples from './components/WeatherSamples/WeatherSamples';
 import SearchCity from './components/SearchCity/SearchCity';
 
@@ -28,7 +27,8 @@ class App extends Component {
       cityObjects: [],
     };
 
-    this.changeCity = this.changeCity.bind(this);
+    this.setCity = this.setCity.bind(this);
+    this.setPreloader = this.setPreloader.bind(this);
     this.getCityForecast = this.getCityForecast.bind(this);
     this.getForecastData = this.getForecastData.bind(this);
     this.renderCities = this.renderCities.bind(this);
@@ -36,9 +36,14 @@ class App extends Component {
     this.displayCities = this.displayCities.bind(this);
   }
 
-  changeCity = value => {
-    console.log("Setting city sate...");
+  setCity = value => {
+    console.log(`City sate: ${value}`);
     this.setState({ city: [value] });
+  }
+
+  setPreloader = mode => {
+    console.log(`Loading sate: ${mode}`);
+    this.setState({ loading: mode });
   }
 
   getCityForecast = async (cityName) => {
@@ -106,15 +111,13 @@ class App extends Component {
   }
 
   renderCities = async (cities) => {
-    /*this.setState({ loading: true });*/
+    this.setPreloader(true); // Start with adding Preloader
     if(this.state[cities]) {
       const cityObj = await Promise.all(this.state[cities]
         .map(city => this.getCityForecast(city)))
-        /*.then(() => {
-          this.setState({ loading: false })
-        })*/
           .catch(e => {console.log(e)});
       this.setState({cityObjects: cityObj});
+      this.setPreloader(false); // Remove Preloader as the whole array is processed
     }
   }
 
@@ -133,19 +136,19 @@ class App extends Component {
     return (
       <div className="App">
         <SearchBar 
-          changeCity={this.changeCity} />
+          setCity={this.setCity} />
         <div className="container">
         {
-          this.state.loading // Shows spinner (true) or result (false)
-            ? <WeatherLoader />
-            : this.state.city[0] // Activetes on the 1st letter. Make it work on Submit.
-              ? <SearchCity
-                  city={this.state.city}
-                  renderCities={this.renderCities}
-                  displayCities={this.displayCities} />
-              : <WeatherSamples
-                  renderCities={this.renderCities}
-                  displayCities={this.displayCities} />
+          this.state.city[0] // Show one city if it is searched
+          ? <SearchCity
+              city={this.state.city}
+              loading={this.state.loading}
+              renderCities={this.renderCities}
+              displayCities={this.displayCities} />
+          : <WeatherSamples // Show list of cities by default
+              loading={this.state.loading}
+              renderCities={this.renderCities}
+              displayCities={this.displayCities} />
         }
         </div>
       </div>
