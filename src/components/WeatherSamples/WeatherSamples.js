@@ -13,7 +13,7 @@ export class WeatherSamples extends Component {
     return (
       <div>
         <div className="sectiontitle">
-            <h2>ПОГОДА НА СЕГОДНЯ</h2>
+            <h2>ПОГОДА В ГОРОДАХ РОССИИ</h2>
           </div>
           <section id="weather">
           {
